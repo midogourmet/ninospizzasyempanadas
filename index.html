@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trabajá en Nino's Pizzas y Empanadas</title>
+<meta name="description" content="Buscamos personal para producción de empanadas. Horario de 15 a 00 h.">
+<meta property="og:title" content="Búsqueda laboral · Nino's Pizzas y Empanadas">
+<meta property="og:description" content="Buscamos personal para producción de empanadas. Horario de 15 a 00 h.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --negro:#0d0d0d; --tinta:#1c1c1c; --gris:#6b6b6b; --gris2:#9a9a9a; --linea:#e4e4e4;
+    --fondo:#f3f3f1; --blanco:#fff; --verde:#1f8a43; --rojo:#c8202f; --foco:#1c1c1c;
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:Inter,-apple-system,Segoe UI,Roboto,Arial,sans-serif; background:var(--fondo); color:var(--tinta); -webkit-font-smoothing:antialiased; }
+
+  .hero { background:#010101; color:#fff; text-align:center; padding:28px 16px 0; }
+  .hero img { width:min(300px,72vw); aspect-ratio:619/303; height:auto; display:block; margin:0 auto; opacity:0; transition:opacity .3s; }
+  .hero img.on { opacity:1; }
+  .tricolor { height:5px; background:linear-gradient(90deg,var(--verde) 0 33.33%,#fff 33.33% 66.66%,var(--rojo) 66.66% 100%); margin:26px -16px 0; }
+
+  .wrap { max-width:720px; margin:0 auto; padding:0 16px 40px; }
+  .intro { background:var(--blanco); border-radius:14px; margin:24px 0 16px; padding:26px 28px; box-shadow:0 1px 2px rgba(0,0,0,.05); border:1px solid #ececea; }
+  .intro .tag { display:inline-block; font-size:12px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--rojo); margin-bottom:8px; }
+  .intro h1 { margin:0 0 10px; font-size:24px; line-height:1.25; font-weight:700; color:var(--negro); }
+  .intro p { margin:6px 0; font-size:15px; line-height:1.55; color:#444; }
+  .chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+  .chip { font-size:13px; font-weight:500; padding:7px 12px; border-radius:999px; background:#f1f1ef; border:1px solid var(--linea); }
+
+  .card { background:var(--blanco); border-radius:14px; padding:24px 28px; margin-bottom:16px; box-shadow:0 1px 2px rgba(0,0,0,.05); border:1px solid #ececea; }
+  .card-h { display:flex; align-items:center; gap:12px; margin-bottom:6px; padding-bottom:14px; border-bottom:1px solid var(--linea); }
+  .num { width:30px; height:30px; border-radius:8px; background:var(--negro); color:#fff; font-weight:700; font-size:14px; display:flex; align-items:center; justify-content:center; flex:none; }
+  .card-h h2 { margin:0; font-size:17px; font-weight:700; color:var(--negro); }
+
+  .q { margin:20px 0 4px; }
+  .q > label.t { display:block; font-weight:600; font-size:15px; margin-bottom:9px; line-height:1.4; }
+  .req { color:var(--rojo); margin-left:2px; }
+  .hint { font-size:13px; color:var(--gris); margin:-4px 0 9px; }
+  input[type=text], input[type=tel], input[type=number], textarea, select {
+    width:100%; padding:12px 14px; font:inherit; font-size:16px; color:var(--tinta);
+    border:1px solid #d6d6d3; border-radius:10px; background:#fff; transition:border-color .15s, box-shadow .15s; }
+  input:focus, textarea:focus, select:focus { outline:none; border-color:var(--foco); box-shadow:0 0 0 3px rgba(0,0,0,.08); }
+  textarea { min-height:110px; resize:vertical; }
+  select { appearance:none; background-image:linear-gradient(45deg,transparent 50%,#555 50%),linear-gradient(135deg,#555 50%,transparent 50%);
+    background-position:calc(100% - 20px) 50%, calc(100% - 15px) 50%; background-size:5px 5px; background-repeat:no-repeat; padding-right:40px; }
+
+  .opts { display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:8px; }
+  .opt { display:flex; align-items:center; gap:10px; padding:11px 13px; border:1px solid #dcdcd9; border-radius:10px; cursor:pointer; font-size:15px; background:#fff; transition:all .12s; }
+  .opt:hover { border-color:#b9b9b5; }
+  .opt input { width:18px; height:18px; margin:0; accent-color:var(--negro); flex:none; }
+  .opt.sel { border-color:var(--negro); background:#f7f7f5; box-shadow:inset 0 0 0 1px var(--negro); }
+
+  .file { border:1.5px dashed #c9c9c5; border-radius:10px; padding:14px; background:#fafaf8; }
+  .file input { width:100%; font-size:14px; }
+
+  .sub { margin-top:10px; }
+  .hidden { display:none !important; }
+  .q.bad input, .q.bad textarea, .q.bad select, .q.bad .opt, .q.bad .file { border-color:var(--rojo); }
+  .err { color:var(--rojo); font-weight:600; font-size:14px; margin:14px 0 0; }
+  button { width:100%; margin-top:18px; padding:16px; font:inherit; font-size:17px; font-weight:700; color:#fff; background:var(--negro);
+    border:0; border-radius:12px; cursor:pointer; letter-spacing:.01em; }
+  button:hover { background:#2a2a2a; }
+  button:disabled { opacity:.6; cursor:default; }
+  .legal { text-align:center; font-size:12px; color:var(--gris2); margin-top:18px; }
+  .ok { text-align:center; padding:48px 24px; }
+  .ok .check { width:56px; height:56px; border-radius:50%; background:var(--verde); color:#fff; font-size:30px; line-height:56px; margin:0 auto 14px; }
+  .ok h2 { margin:0 0 8px; font-size:22px; }
+  .ok p { color:#555; margin:0; }
+  @media (max-width:520px) { .intro, .card { padding:20px 18px; } .intro h1 { font-size:21px; } }
+</style>
+</head>
+<body>
+<div class="hero">
+  <img id="logo" alt="Nino's Pizzas & Empanadas">
+  <div class="tricolor"></div>
+</div>
+
+<div class="wrap">
+  <div class="intro">
+    <span class="tag">Búsqueda laboral</span>
+    <h1>Buscamos personal para producción de empanadas</h1>
+    <p><b>Horario excluyente: de 15 a 00 h.</b></p>
+    <p>Se trabaja de lunes a domingo, con 1 franco semanal entre lunes y jueves (el día lo define el local).</p>
+    <div class="chips"><span class="chip">15 a 00 h</span><span class="chip">Lunes a domingo</span><span class="chip">1 franco semanal</span><span class="chip">~5 minutos</span></div>
+  </div>
+
+  <form id="f" novalidate>
+    <div class="card">
+      <div class="card-h"><div class="num">1</div><h2>Datos personales y disponibilidad</h2></div>
+
+      <div class="q" data-q="nombre"><label class="t">1. Nombre y apellido<span class="req">*</span></label>
+        <input type="text" name="nombre" autocomplete="name"></div>
+
+      <div class="q" data-q="whatsapp"><label class="t">2. Número de celular para contactarte por WhatsApp<span class="req">*</span></label>
+        <div class="hint">Solo números, con código de área y sin 0 ni 15. Ej: 1123456789</div>
+        <input type="tel" name="whatsapp" inputmode="numeric" maxlength="13" placeholder="1123456789"></div>
+
+      <div class="q" data-q="edad"><label class="t">3. Edad<span class="req">*</span></label>
+        <input type="number" name="edad" min="16" max="80" inputmode="numeric"></div>
+
+      <div class="q" data-q="estadoCivil"><label class="t">4. Estado civil<span class="req">*</span></label>
+        <div class="opts" data-radio="estadoCivil" data-opts="Soltero/a|En pareja|Casado/a|Divorciado/a|Viudo/a"></div></div>
+
+      <div class="q" data-q="hijos"><label class="t">5. ¿Tenés hijos?<span class="req">*</span></label>
+        <div class="opts" data-radio="hijos" data-opts="Sí|No"></div></div>
+
+      <div class="q" data-q="provincia"><label class="t">6. Provincia en la que vivís<span class="req">*</span></label>
+        <select name="provincia">
+          <option value="">Seleccioná una opción</option>
+          <option>Ciudad Autónoma de Buenos Aires</option><option>Buenos Aires</option><option>Catamarca</option><option>Chaco</option>
+          <option>Chubut</option><option>Córdoba</option><option>Corrientes</option><option>Entre Ríos</option><option>Formosa</option>
+          <option>Jujuy</option><option>La Pampa</option><option>La Rioja</option><option>Mendoza</option><option>Misiones</option>
+          <option>Neuquén</option><option>Río Negro</option><option>Salta</option><option>San Juan</option><option>San Luis</option>
+          <option>Santa Cruz</option><option>Santa Fe</option><option>Santiago del Estero</option><option>Tierra del Fuego</option><option>Tucumán</option>
+        </select></div>
+
+      <div class="q" data-q="barrio"><label class="t">7. Barrio o localidad donde vivís<span class="req">*</span></label>
+        <input type="text" name="barrio"></div>
+
+      <div class="q" data-q="disponibilidad"><label class="t">8. ¿Tenés disponibilidad para trabajar de lunes a domingo, de 15 a 00 h, con 1 franco semanal entre lunes y jueves (el día lo define el local)?<span class="req">*</span></label>
+        <div class="opts" data-radio="disponibilidad" data-opts="Sí|No|Parcial"></div></div>
+
+      <div class="q" data-q="vuelta"><label class="t">9. ¿Cómo volvés a tu casa a las 00 h?<span class="req">*</span></label>
+        <div class="opts" data-radio="vuelta" data-opts="Caminando|Colectivo|Moto o auto propio|Me buscan|Otro"></div></div>
+
+      <div class="q" data-q="libreta"><label class="t">10. ¿Tenés libreta sanitaria vigente?<span class="req">*</span></label>
+        <div class="opts" data-radio="libreta" data-opts="Sí|No, pero la saco|No"></div></div>
+
+      <div class="q" data-q="gastro"><label class="t">11. ¿Trabajaste alguna vez en gastronomía?<span class="req">*</span></label>
+        <div class="opts" data-radio="gastro" data-opts="Sí|No"></div></div>
+    </div>
+
+    <div id="secGastro" class="hidden">
+      <div class="card">
+        <div class="card-h"><div class="num">2</div><h2>Experiencia</h2></div>
+
+        <div class="q" data-q="tiempoTotal"><label class="t">12. ¿Cuánto tiempo trabajaste en gastronomía en total?<span class="req">*</span></label>
+          <div class="opts" data-radio="tiempoTotal" data-opts="Menos de 6 meses|6 meses a 1 año|1 a 3 años|Más de 3 años"></div></div>
+
+        <div class="q" data-q="rubro"><label class="t">13. ¿En qué rubro?<span class="req">*</span></label>
+          <div class="hint">Podés marcar más de una opción.</div>
+          <div class="opts" data-check="rubro" data-opts="Fábrica de empanadas|Pizzería y empanadas|Rotisería|Panadería|Otro"></div>
+          <div class="sub hidden" id="rubroOtroBox"><input type="text" name="rubroOtro" placeholder="¿Qué otro rubro? Describilo"></div></div>
+
+        <div class="q" data-q="ultimoLocal"><label class="t">14. Nombre del último local donde trabajaste<span class="req">*</span></label>
+          <input type="text" name="ultimoLocal"></div>
+
+        <div class="q" data-q="tiempoLocal"><label class="t">15. ¿Cuánto tiempo estuviste en ese local?<span class="req">*</span></label>
+          <div class="opts" data-radio="tiempoLocal" data-opts="Menos de 3 meses|3 a 6 meses|6 meses a 1 año|Más de 1 año"></div></div>
+
+        <div class="q" data-q="tareas"><label class="t">16. ¿Qué tareas hiciste?<span class="req">*</span></label>
+          <div class="hint">Podés marcar más de una opción.</div>
+          <div class="opts" data-check="tareas" data-opts="Armado de empanadas|Cierre con molde|Cierre con máquina|Armado de tartas o pastelitos|Envasado y freezado|Limpieza del puesto|Atención al público|Manejo de caja|Otra"></div></div>
+
+        <div class="q hidden" data-q="tareasDesc" id="tareasDescBox"><label class="t">17. Contanos con tus palabras qué tareas hacías<span class="req">*</span></label>
+          <textarea name="tareasDesc" placeholder="Ej: armaba empanadas de carne y pollo con molde, envasaba y limpiaba el puesto al cierre..."></textarea></div>
+      </div>
+
+      <div class="card">
+        <div class="card-h"><div class="num">3</div><h2>Situación</h2></div>
+        <div class="q" data-q="situacion"><label class="t">18. Tenés que dejar armadas 300 empanadas antes de las 19 h. A las 17 h te das cuenta de que a tu ritmo no llegás. ¿Qué hacés?<span class="req">*</span></label>
+          <textarea name="situacion"></textarea></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-h"><div class="num" id="numCierre">2</div><h2>Cierre</h2></div>
+
+      <div class="q" data-q="empezar"><label class="t">19. ¿Desde cuándo podrías empezar?<span class="req">*</span></label>
+        <div class="opts" data-radio="empezar" data-opts="Inmediato|En 1 semana|En 2 semanas o más"></div></div>
+
+      <div class="q" data-q="pretension"><label class="t">20. ¿Cuál es tu remuneración pretendida? Monto mensual en mano<span class="req">*</span></label>
+        <div class="hint">Solo números, sin puntos ni signos. Ej: 100000</div>
+        <input type="text" name="pretension" inputmode="numeric" placeholder="100000"></div>
+
+      <div class="q" data-q="foto"><label class="t">21. Foto tuya actual<span class="req">*</span></label>
+        <div class="hint">Una foto de frente (tipo carnet o selfie).</div>
+        <div class="file"><input type="file" name="foto" accept="image/*"></div></div>
+
+      <div class="q" data-q="cv"><label class="t">22. CV<span class="req">*</span></label>
+        <div class="hint">PDF o foto del CV. Máximo 10 MB.</div>
+        <div class="file"><input type="file" name="cv" accept="application/pdf,image/*"></div></div>
+
+      <div id="err" class="err"></div>
+      <button type="submit" id="btn">Enviar postulación</button>
+    </div>
+    <div class="legal">Nino's Pizzas &amp; Empanadas · Tus datos se usan solo para este proceso de selección.</div>
+  </form>
+
+  <div id="ok" class="card ok hidden">
+    <div class="check">✓</div>
+    <h2>¡Gracias por postularte!</h2>
+    <p>Recibimos tus datos. Si tu perfil avanza, te vamos a contactar por WhatsApp.</p>
+  </div>
+</div>
+
+<script>
+  var API = 'https://script.google.com/macros/s/AKfycbyseZrQabTJ7qHOArP1v9Z72-Km3JQoI8yRe2KIZKCz5ki-yOQyuwWnQYy6I08xOFIb/exec';
+  fetch(API + '?logo=1', { credentials: 'omit' }).then(function (r) { return r.text(); }).then(function (t) {
+    var img = document.getElementById('logo'); img.onload = function () { img.classList.add('on'); };
+    img.src = 'data:image/jpeg;base64,' + t.trim();
+  }).catch(function () {});
+
+  document.querySelectorAll('[data-radio],[data-check]').forEach(function (box) {
+    var isRadio = box.hasAttribute('data-radio');
+    var name = box.getAttribute(isRadio ? 'data-radio' : 'data-check');
+    box.getAttribute('data-opts').split('|').forEach(function (o) {
+      var l = document.createElement('label'); l.className = 'opt';
+      var i = document.createElement('input');
+      i.type = isRadio ? 'radio' : 'checkbox'; i.name = name; i.value = o;
+      l.appendChild(i); l.appendChild(document.createTextNode(o)); box.appendChild(l);
+    });
+  });
+
+  var f = document.getElementById('f');
+  function digits(el) { el.value = el.value.replace(/\D/g, ''); }
+  f.whatsapp.addEventListener('input', function () { digits(this); });
+  f.pretension.addEventListener('input', function () { digits(this); });
+
+  function checks(n) { return Array.prototype.map.call(f.querySelectorAll('[name="' + n + '"]:checked'), function (x) { return x.value; }); }
+  function val(n) {
+    var c = f.querySelector('[name="' + n + '"]:checked'); if (c) return c.value;
+    var el = f.querySelector('[name="' + n + '"]');
+    return el && el.type !== 'radio' && el.type !== 'checkbox' ? el.value.trim() : '';
+  }
+
+  f.addEventListener('change', function (e) {
+    var t = e.target;
+    if (t.type === 'radio' || t.type === 'checkbox') {
+      f.querySelectorAll('[name="' + t.name + '"]').forEach(function (x) { x.parentNode.classList.toggle('sel', x.checked); });
+    }
+    if (t.name === 'gastro') {
+      var si = t.value === 'Sí';
+      document.getElementById('secGastro').classList.toggle('hidden', !si);
+      document.getElementById('numCierre').textContent = si ? '4' : '2';
+    }
+    if (t.name === 'rubro') document.getElementById('rubroOtroBox').classList.toggle('hidden', checks('rubro').indexOf('Otro') < 0);
+    if (t.name === 'tareas') document.getElementById('tareasDescBox').classList.toggle('hidden', checks('tareas').length === 0);
+    var q = t.closest('.q'); if (q) q.classList.remove('bad');
+  });
+  f.addEventListener('input', function (e) { var q = e.target.closest('.q'); if (q) q.classList.remove('bad'); });
+
+  function readB64(file) {
+    return new Promise(function (res, rej) {
+      var r = new FileReader();
+      r.onload = function () { res(r.result.split(',')[1]); };
+      r.onerror = rej; r.readAsDataURL(file);
+    });
+  }
+  function compressImage(file) {
+    return new Promise(function (res) {
+      var img = new Image(), url = URL.createObjectURL(file);
+      img.onload = function () {
+        var max = 1200, w = img.width, h = img.height, s = Math.min(1, max / Math.max(w, h));
+        var c = document.createElement('canvas'); c.width = Math.round(w * s); c.height = Math.round(h * s);
+        c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+        URL.revokeObjectURL(url);
+        res({ name: 'foto.jpg', mimeType: 'image/jpeg', data: c.toDataURL('image/jpeg', 0.82).split(',')[1] });
+      };
+      img.onerror = function () { URL.revokeObjectURL(url); res(null); };
+      img.src = url;
+    });
+  }
+
+  f.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    var err = document.getElementById('err'); err.textContent = '';
+    f.querySelectorAll('.q.bad').forEach(function (q) { q.classList.remove('bad'); });
+    var bad = [];
+    function need(name, ok) { if (!ok) bad.push(name); }
+
+    var d = {
+      nombre: val('nombre'), whatsapp: val('whatsapp'), edad: val('edad'), estadoCivil: val('estadoCivil'),
+      hijos: val('hijos'), provincia: val('provincia'), barrio: val('barrio'), disponibilidad: val('disponibilidad'),
+      vuelta: val('vuelta'), libreta: val('libreta'), gastro: val('gastro'), empezar: val('empezar'), pretension: val('pretension')
+    };
+    Object.keys(d).forEach(function (k) { need(k, !!d[k]); });
+    if (d.whatsapp && (d.whatsapp.length < 8 || d.whatsapp.length > 13)) { need('whatsapp', false); }
+    if (d.gastro === 'Sí') {
+      d.tiempoTotal = val('tiempoTotal'); d.rubro = checks('rubro'); d.rubroOtro = val('rubroOtro');
+      d.ultimoLocal = val('ultimoLocal'); d.tiempoLocal = val('tiempoLocal'); d.tareas = checks('tareas');
+      d.tareasDesc = val('tareasDesc'); d.situacion = val('situacion');
+      need('tiempoTotal', !!d.tiempoTotal);
+      need('rubro', d.rubro.length > 0 && (d.rubro.indexOf('Otro') < 0 || !!d.rubroOtro));
+      need('ultimoLocal', !!d.ultimoLocal); need('tiempoLocal', !!d.tiempoLocal);
+      need('tareas', d.tareas.length > 0); if (d.tareas.length) need('tareasDesc', !!d.tareasDesc);
+      need('situacion', !!d.situacion);
+    }
+    var foto = f.foto.files[0], cv = f.cv.files[0];
+    need('foto', !!foto); need('cv', !!cv);
+    if (cv && cv.size > 10 * 1024 * 1024) { need('cv', false); err.textContent = 'El CV supera los 10 MB. Subí un archivo más liviano.'; }
+
+    if (bad.length) {
+      bad.forEach(function (n) { var q = f.querySelector('[data-q="' + n + '"]'); if (q) q.classList.add('bad'); });
+      if (!err.textContent) err.textContent = 'Revisá las preguntas marcadas en rojo: son obligatorias.' + (bad.indexOf('whatsapp') > -1 && d.whatsapp ? ' El celular debe tener entre 8 y 13 números.' : '');
+      var first = f.querySelector('.q.bad'); if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    var btn = document.getElementById('btn'); btn.disabled = true; btn.textContent = 'Enviando...';
+    try {
+      d.foto = await compressImage(foto);
+      if (!d.foto) { if (foto.size > 3 * 1024 * 1024) throw new Error('La foto no se pudo procesar. Probá con otra imagen.');
+        d.foto = { name: foto.name, mimeType: foto.type, data: await readB64(foto) }; }
+      d.cv = { name: cv.name, mimeType: cv.type, data: await readB64(cv) };
+    } catch (ex) {
+      err.textContent = ex.message || 'No se pudo leer el archivo.'; btn.disabled = false; btn.textContent = 'Enviar postulación'; return;
+    }
+    function fail(msg) { err.textContent = 'Error al enviar: ' + msg + '. Probá de nuevo.'; btn.disabled = false; btn.textContent = 'Enviar postulación'; }
+    fetch(API, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(d), credentials: 'omit', redirect: 'follow' })
+      .then(function (r) { return r.json(); })
+      .then(function (res) {
+        if (!res.ok) return fail(res.error || 'error desconocido');
+        f.classList.add('hidden'); document.querySelector('.intro').classList.add('hidden');
+        document.getElementById('ok').classList.remove('hidden'); window.scrollTo(0, 0);
+      })
+      .catch(function () { fail('no se pudo conectar'); });
+  });
+</script>
+</body>
+</html>
