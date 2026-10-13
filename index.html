@@ -159,15 +159,16 @@
           <textarea name="tareasDesc" placeholder="Ej: armaba empanadas de carne y pollo con molde, envasaba y limpiaba el puesto al cierre..."></textarea></div>
       </div>
 
-      <div class="card">
-        <div class="card-h"><div class="num">3</div><h2>Situación</h2></div>
-        <div class="q" data-q="situacion"><label class="t">18. Tenés que dejar armadas 300 empanadas antes de las 19 h. A las 17 h te das cuenta de que a tu ritmo no llegás. ¿Qué hacés?<span class="req">*</span></label>
-          <textarea name="situacion"></textarea></div>
-      </div>
     </div>
 
     <div class="card">
-      <div class="card-h"><div class="num" id="numCierre">2</div><h2>Cierre</h2></div>
+      <div class="card-h"><div class="num" id="numSit">2</div><h2>Situación</h2></div>
+      <div class="q" data-q="situacion"><label class="t">18. Tenés que dejar armadas 300 empanadas antes de las 19 h. A las 17 h te das cuenta de que a tu ritmo no llegás. ¿Qué hacés?<span class="req">*</span></label>
+        <textarea name="situacion"></textarea></div>
+    </div>
+
+    <div class="card">
+      <div class="card-h"><div class="num" id="numCierre">3</div><h2>Cierre</h2></div>
 
       <div class="q" data-q="empezar"><label class="t">19. ¿Desde cuándo podrías empezar?<span class="req">*</span></label>
         <div class="opts" data-radio="empezar" data-opts="Inmediato|En 1 semana|En 2 semanas o más"></div></div>
@@ -216,6 +217,13 @@
   });
 
   var f = document.getElementById('f');
+  function renumber() {
+    var n = 0;
+    f.querySelectorAll('.q > label.t').forEach(function (l) {
+      if (l.closest('.hidden')) return;
+      n++; l.firstChild.nodeValue = l.firstChild.nodeValue.replace(/^\d+\. /, n + '. ');
+    });
+  }
   function digits(el) { el.value = el.value.replace(/\D/g, ''); }
   f.whatsapp.addEventListener('input', function () { digits(this); });
   f.pretension.addEventListener('input', function () { digits(this); });
@@ -235,12 +243,15 @@
     if (t.name === 'gastro') {
       var si = t.value === 'Sí';
       document.getElementById('secGastro').classList.toggle('hidden', !si);
-      document.getElementById('numCierre').textContent = si ? '4' : '2';
+      document.getElementById('numSit').textContent = si ? '3' : '2';
+      document.getElementById('numCierre').textContent = si ? '4' : '3';
+      renumber();
     }
     if (t.name === 'rubro') document.getElementById('rubroOtroBox').classList.toggle('hidden', checks('rubro').indexOf('Otro') < 0);
-    if (t.name === 'tareas') document.getElementById('tareasDescBox').classList.toggle('hidden', checks('tareas').length === 0);
+    if (t.name === 'tareas') { document.getElementById('tareasDescBox').classList.toggle('hidden', checks('tareas').length === 0); renumber(); }
     var q = t.closest('.q'); if (q) q.classList.remove('bad');
   });
+  renumber();
   f.addEventListener('input', function (e) { var q = e.target.closest('.q'); if (q) q.classList.remove('bad'); });
 
   function readB64(file) {
@@ -275,19 +286,18 @@
     var d = {
       nombre: val('nombre'), whatsapp: val('whatsapp'), edad: val('edad'), estadoCivil: val('estadoCivil'),
       hijos: val('hijos'), provincia: val('provincia'), barrio: val('barrio'), disponibilidad: val('disponibilidad'),
-      vuelta: val('vuelta'), libreta: val('libreta'), gastro: val('gastro'), empezar: val('empezar'), pretension: val('pretension')
+      vuelta: val('vuelta'), libreta: val('libreta'), gastro: val('gastro'), situacion: val('situacion'), empezar: val('empezar'), pretension: val('pretension')
     };
     Object.keys(d).forEach(function (k) { need(k, !!d[k]); });
     if (d.whatsapp && (d.whatsapp.length < 8 || d.whatsapp.length > 13)) { need('whatsapp', false); }
     if (d.gastro === 'Sí') {
       d.tiempoTotal = val('tiempoTotal'); d.rubro = checks('rubro'); d.rubroOtro = val('rubroOtro');
       d.ultimoLocal = val('ultimoLocal'); d.tiempoLocal = val('tiempoLocal'); d.tareas = checks('tareas');
-      d.tareasDesc = val('tareasDesc'); d.situacion = val('situacion');
+      d.tareasDesc = val('tareasDesc');
       need('tiempoTotal', !!d.tiempoTotal);
       need('rubro', d.rubro.length > 0 && (d.rubro.indexOf('Otro') < 0 || !!d.rubroOtro));
       need('ultimoLocal', !!d.ultimoLocal); need('tiempoLocal', !!d.tiempoLocal);
       need('tareas', d.tareas.length > 0); if (d.tareas.length) need('tareasDesc', !!d.tareasDesc);
-      need('situacion', !!d.situacion);
     }
     var foto = f.foto.files[0], cv = f.cv.files[0];
     need('foto', !!foto); need('cv', !!cv);
