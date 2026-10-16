@@ -58,6 +58,7 @@
 
   .sub { margin-top:10px; }
   .hidden { display:none !important; }
+  body.cargando .wrap { visibility:hidden; }
   .q.bad input, .q.bad textarea, .q.bad select, .q.bad .opt, .q.bad .file { border-color:var(--rojo); }
   .err { color:var(--rojo); font-weight:600; font-size:14px; margin:14px 0 0; }
   button { width:100%; margin-top:18px; padding:16px; font:inherit; font-size:17px; font-weight:700; color:#fff; background:var(--negro);
@@ -72,7 +73,7 @@
   @media (max-width:520px) { .intro, .card { padding:20px 18px; } .intro h1 { font-size:21px; } }
 </style>
 </head>
-<body>
+<body class="cargando">
 <div class="hero">
   <img id="logo" alt="Nino's Pizzas & Empanadas">
   <div class="tricolor"></div>
@@ -191,6 +192,13 @@
     <div class="legal">Nino's Pizzas &amp; Empanadas · Tus datos se usan solo para este proceso de selección.</div>
   </form>
 
+  <div id="cerrada" class="card ok hidden">
+    <div class="check" style="background:#c8202f">✕</div>
+    <h2>Convocatoria cerrada</h2>
+    <p>Ya cerramos esta búsqueda de personal. ¡Gracias por tu interés!</p>
+    <p style="margin-top:10px">Seguinos en Instagram <b>@ninos_pizzeriaok</b> para enterarte de las próximas búsquedas.</p>
+  </div>
+
   <div id="ok" class="card ok hidden">
     <div class="check">✓</div>
     <h2>¡Gracias por postularte!</h2>
@@ -204,6 +212,19 @@
     var img = document.getElementById('logo'); img.onload = function () { img.classList.add('on'); };
     img.src = 'data:image/jpeg;base64,' + t.trim();
   }).catch(function () {});
+
+  function listo() { document.body.classList.remove('cargando'); }
+  function mostrarCerrada() {
+    document.getElementById('f').classList.add('hidden');
+    document.querySelector('.intro').classList.add('hidden');
+    document.getElementById('ok').classList.add('hidden');
+    document.getElementById('cerrada').classList.remove('hidden');
+    listo(); window.scrollTo(0, 0);
+  }
+  setTimeout(listo, 6000);
+  fetch(API + '?estado=1', { credentials: 'omit' }).then(function (r) { return r.json(); }).then(function (s) {
+    if (s && s.abierta === false) mostrarCerrada(); else listo();
+  }).catch(listo);
 
   document.querySelectorAll('[data-radio],[data-check]').forEach(function (box) {
     var isRadio = box.hasAttribute('data-radio');
@@ -323,6 +344,7 @@
     fetch(API, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(d), credentials: 'omit', redirect: 'follow' })
       .then(function (r) { return r.json(); })
       .then(function (res) {
+        if (res.cerrada) { mostrarCerrada(); return; }
         if (!res.ok) return fail(res.error || 'error desconocido');
         f.classList.add('hidden'); document.querySelector('.intro').classList.add('hidden');
         document.getElementById('ok').classList.remove('hidden'); window.scrollTo(0, 0);
